@@ -20,16 +20,16 @@ const displayPhones =(phones, isShowAll) => {
   else{
     showAllcontainer.classList.add('hidden');
   }
-console.log('is show all', isShowAll);
+// console.log('is show all', isShowAll);
   // display first 13 after click search 
  if(!isShowAll){
   phones = phones.slice(0, 12);
  }
 
 
-  console.log(phones);
+  // console.log(phones);
   phones.forEach(phone => {
-    console.log(phone);
+    // console.log(phone);
     // 2. create a div.
     const phoneCard = document.createElement('div');
     phoneCard.classList = `card p-4 bg-gray-100 shadow-xl mt-5`;
@@ -60,14 +60,32 @@ const handleShowDetail = async (id) =>{
   //  single phone data 
   const res = await fetch(`https://openapi.programming-hero.com/api/phone/${id}`);
   const data = await res.json();
-  console.log(data);
+  const phone = data.data;
+  showPhoneDetails(phone)
+}
+
+const showPhoneDetails = (phone) => {
+    console.log(phone);
+    const phoneName = document.getElementById('show-detail-phone-name');
+    phoneName.innerText = phone.name;
+
+    const showDetailContainer = document.getElementById('show-detail-container');
+    showDetailContainer.innerHTML =`
+    <img src="${phone.image}" alt="">
+    <p><span>storage:</span>${phone?.mainFeatures?.storage || 'no storage details available'} </p>
+    
+    `
+
+
+  // show modal 
+  show_details_modal.showModal();
 }
 
 const handleSearch = (isShowAll) => {
   toggleLoadingSpinner(true);
   const searchField = document.getElementById('search-field');
   const searchText = searchField.value;
-  console.log(searchText);
+  // console.log(searchText);
   loadPhone(searchText, isShowAll);
 }
 
